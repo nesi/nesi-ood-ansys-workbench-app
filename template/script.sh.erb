@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Clean the environment
-module purge
+module purge && module restore
 
 # Set working directory to home directory
 cd "${HOME}"
@@ -22,6 +22,13 @@ cd "${HOME}"
   xfsettingsd --sm-client-disable
   xfce4-panel --sm-client-disable
 ) &
+
+# No screensaver or power mgmt
+xfconf-query -c xfce4-screensaver -p /saver/enabled -s false
+xfconf-query -c xfce4-screensaver -p /lock/enabled -s false
+
+#Start up xfce desktop (block until user logs out of desktop)
+xfce4-session
 
 #
 
