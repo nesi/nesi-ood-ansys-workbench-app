@@ -1,0 +1,11 @@
+# Export the module function if it exists
+[[ $(type -t module) == "function" ]] && export -f module
+
+exec &> >(tee -a "pod.log")
+
+source /bin/find_host_port
+export host="$HOST_CFG"
+export port="$PORT_CFG"
+
+echo "host is: ${host}"
+echo "port is: ${port}"
