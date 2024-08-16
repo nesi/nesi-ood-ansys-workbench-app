@@ -255,6 +255,10 @@ while read -r line; do
   if [[ ${line} =~ "Full-control authentication enabled for" ]]; then
     change_passwd
     create_yml
+    kubectl get secret $(hostname)-secret -o json | jq --arg newpass "$(echo -n ${password} | base64)" '.data["password"]=$newpass' | kubectl apply -f -
+    kubectl get secret $(hostname)-secret -o json | jq --arg newspass "$(echo -n ${spassword} | base64)" '.data["spassword"]=$newspass' | kubectl apply -f -
+    echo "new password: $password"
+    echo "new spassword: $spassword"
   fi
 done < <(tail -f --pid=${SCRIPT_PID} "vnc.log") &
 
@@ -267,4 +271,3 @@ wait ${SCRIPT_PID} || clean_up 1
 
 # Exit cleanly
 clean_up
-
