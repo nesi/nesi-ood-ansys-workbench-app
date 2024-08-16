@@ -13,11 +13,13 @@ script:
     container:
       name: "virtualdesktop"
       image: "ghcr.io/lbrick/nesi-ondemand-vnc/nesi-ondemand-vnc:0.1"
-      command: ["/bin/bash","-l","<%= staged_root %>/job_script_content.sh"]
+      command: ["/bin/bash","-l","<%= staged_root %>/custom_job_script.sh"]
       restart_policy: 'OnFailure'
       env:
         TZ: "Pacific/Auckland"
         LMOD_SITE_MODULEPATH: "/opt/nesi/CS400_centos7_bdw/modules/all"
+        WEBSOCKIFY_CMD: "/usr/local/bin/websockify"
+        SESSION_DIR: "<%= staged_root %>"
       port: "5901"
       cpu: "<%= num_cores %>"
       memory: "<%= num_mem %>Gi"

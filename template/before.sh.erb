@@ -3,9 +3,34 @@
 
 exec &> >(tee -a "pod.log")
 
+which websockify
+
 source /bin/find_host_port
 export host="$HOST_CFG"
-export port="$PORT_CFG"
+#export port="$PORT_CFG"
+export websocket="$PORT_CFG"
 
 echo "host is: ${host}"
 echo "port is: ${port}"
+echo "websocket is: $websocket"
+echo "password is: $password"
+echo "spassword is: $spassword"
+
+export PASSWORD=$password
+cat <<EOF | kubectl apply -f -
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: $(hostname)-secret
+  namespace: $POD_NAMESPACE
+  labels:
+    job: $(hostname)
+    app.kubernetes.io/managed-by: open-ondemand
+data:
+  password: $(echo -n "$PASSWORD" | base64 )
+EOF
+
+/bin/bash /opt/open_ondemand/helpers/k8_helper spassword "$spassword"
+/bin/bash /opt/open_ondemand/helpers/k8_helper websocket "$websocket"
