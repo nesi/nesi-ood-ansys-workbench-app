@@ -3,6 +3,9 @@
 # Clean the environment
 module purge && module restore
 
+# Ensure that the user's configured login shell is used
+export SHELL="$(getent passwd $USER | cut -d: -f7)"
+
 # Set working directory to home directory
 cd "${HOME}"
 
@@ -10,26 +13,26 @@ cd "${HOME}"
 # Launch Xfce Window Manager and Panel
 #
 
-(
-  export SEND_256_COLORS_TO_REMOTE=1
-  export XDG_CONFIG_HOME="<%= session.staged_root.join("config") %>"
-  export XDG_DATA_HOME="<%= session.staged_root.join("share") %>"
-  export XDG_CACHE_HOME="$(mktemp -d)"
-  module restore
-  set -x
-  xfwm4 --compositor=off --sm-client-disable
-  xsetroot -solid "#D3D3D3"
-  xfsettingsd --sm-client-disable
-  xfce4-panel --sm-client-disable
-) &
+#(
+#  export SEND_256_COLORS_TO_REMOTE=1
+#  export XDG_CONFIG_HOME="<%= session.staged_root.join("config") %>"
+#  export XDG_DATA_HOME="<%= session.staged_root.join("share") %>"
+#  export XDG_CACHE_HOME="$(mktemp -d)"
+#  module restore
+#  set -x
+#  xfwm4 --compositor=off --sm-client-disable
+#  xsetroot -solid "#D3D3D3"
+#  xfsettingsd --sm-client-disable
+#  xfce4-panel --sm-client-disable
+#) &
 
 # No screensaver or power mgmt
-xfconf-query -c xfce4-screensaver -p /saver/enabled -s false
-xfconf-query -c xfce4-screensaver -p /lock/enabled -s false
+#xfconf-query -n -c xfce4-screensaver -p /saver/enabled -s false
+#xfconf-query -n -c xfce4-screensaver -p /lock/enabled -s false
 
 #Start up xfce desktop (block until user logs out of desktop)
-xfce4-session
+#xfce4-session
 
 #
 
-
+source "<%= session.staged_root.join("desktops", "xfce.sh") %>"
