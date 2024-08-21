@@ -9,7 +9,7 @@ fi
 PANEL_CONFIG="${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml"
 if [[ ! -e "${PANEL_CONFIG}" ]]; then
   mkdir -p "$(dirname "${PANEL_CONFIG}")"
-  cp "/etc/xdg/xfce4/panel/default.xml" "${PANEL_CONFIG}"
+  cp "${SESSION_DIR}/config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml" "${PANEL_CONFIG}"
 fi
 
 # Disable startup services

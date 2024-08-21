@@ -12,7 +12,7 @@ script:
   native:
     container:
       name: "virtualdesktop"
-      image: "ghcr.io/nesi/nesi-ondemand-vnc:v0.1.0"
+      image: "ghcr.io/nesi/nesi-ondemand-vnc:v0.2.0"
       command: ["/bin/bash","-l","<%= staged_root %>/custom_job_script.sh"]
       restart_policy: 'OnFailure'
       env:
