@@ -2,6 +2,15 @@
    user = OodSupport::User.new
    ood_nfs_server = Resolv.getaddress("ood-nfs-node")
    software_nfs_server = Resolv.getaddress("external-nfs")
+
+   # Initialize nesi_gid to nil
+   nesi_gid = nil
+
+   # Fetch the GID for the account group only if the account is present
+   if account.present?
+     nesi_group = Etc.getgrnam(account)  # Fetching the group based on the account
+     nesi_gid = nesi_group ? nesi_group.gid : nil  # Get the GID, or nil if not found
+   end
 %>
 ---
 batch_connect:
