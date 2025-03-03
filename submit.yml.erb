@@ -39,15 +39,25 @@ script:
         path: /nesi/home
         destination_path: /nesi/home
       - type: nfs
+        name: project
+        host: <%= ood_nfs_server %>
+        path: /nesi/project
+        destination_path: /nesi/project
+      - type: nfs
+        name: nobackup
+        host: <%= ood_nfs_server %>
+        path: /nesi/nobackup
+        destination_path: /nesi/nobackup
+      - type: nfs
         name: software
         host: <%= software_nfs_server %>
         path: /mnt/data-migration
         destination_path: /opt/nesi
       - type: host
-        name: nslcd-socket
+        name: nss-socket
         host_type: Socket
-        path: /var/run/nslcd/socket
-        destination_path: /var/run/nslcd/socket
+        path: /var/lib/sss/pipes/nss
+        destination_path: /var/lib/sss/pipes/nss
       - type: host
         name: nsswitch-conf
         host_type: File
