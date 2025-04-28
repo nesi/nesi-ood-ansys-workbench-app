@@ -12,6 +12,9 @@ which websockify
 # for vnc app the `port` variable is already set and we
 # use the nodePort from find_host_port for the websocket
 source /bin/find_host_port
+
+export HOST_CFG=$(dig +short -x $HOST_CFG)
+
 export host="$HOST_CFG"
 export websocket="$PORT_CFG"
 
