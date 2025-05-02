@@ -1,3 +1,8 @@
+<%-
+  groups = OodSupport::User.new.groups.sort_by(&:id).tap { |groups|
+    groups.unshift(groups.delete(OodSupport::Process.group))
+  }.map(&:name).grep(/.*[0-9]{5}/)
+-%>
 ---
 cluster: "my-k8s-cluster"
 
@@ -6,40 +11,38 @@ title: "Virtual Desktop"
 description: |
   This app will launch a Virtual Desktop
 attributes:
-  bc_num_slots: "1"
   bc_vnc_resolution:
     required: true
-  bc_account:
-    label: "Account"
-    help: "If left blank default account will be used"
-  node: ""
-  bc_queue:
-    value: interactive
+  account:
+    label: "Project Code"
+    widget: select
+    options:
+      <%- groups.each do |group| %>
+      - "<%= group %>"
+      <%- end %>
+    required: true
   bc_num_hours:
-    max: 8
+    max: 24
     min: 1
     step: 1
     value: 1
     widget: number_field
   num_cores:
     label: Number of cores
-    max: 16
+    max: 4
     min: 1
     value: 2
     widget: number_field
   num_mem:
     label: Memory per job (GB)
-    max: 32
-    min: 1
+    max: 64
+    min: 2
     step: 1
-    value: 1
+    value: 2
     widget: number_field
 form:
-  - bc_account
-  - bc_queue
-  - node_type
+  - account
   - bc_vnc_resolution
   - bc_num_hours
   - num_cores
   - num_mem
-  - node

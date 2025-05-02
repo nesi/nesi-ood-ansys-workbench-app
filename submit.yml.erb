@@ -17,7 +17,8 @@ batch_connect:
   template: "vnc"
 
 script:
-  wall_time: "<%= wall_time.to_i * 3600 %>"
+  accounting_id: "<% account %>"
+  wall_time: "<%= bc_num_hours.to_i * 3600 %>"
   native:
     container:
       name: "virtualdesktop"
