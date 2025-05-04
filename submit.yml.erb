@@ -22,9 +22,13 @@ script:
   native:
     container:
       name: "virtualdesktop"
-      image: "ghcr.io/nesi/nesi-ondemand-vnc:v0.2.0"
+      image: "ghcr.io/nesi/nesi-ondemand-vnc:v0.3.0"
       command: ["/bin/bash","-l","<%= staged_root %>/custom_job_script.sh"]
       restart_policy: 'OnFailure'
+      <% if nesi_gid %>
+      supplemental_groups:
+        - <%= nesi_gid %>
+      <% end %>
       env:
         TZ: "Pacific/Auckland"
         LMOD_SITE_MODULEPATH: "/opt/nesi/CS400_centos7_bdw/modules/all"
