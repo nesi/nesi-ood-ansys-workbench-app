@@ -46,5 +46,11 @@ fi
 # see https://github.com/OSC/ondemand/issues/700
 eval $(dbus-launch --sh-syntax)
 
+# Force kill any existing compositors that might be running
+killall compton picom xcompmgr compiz 2>/dev/null || true
+
+# Ensure xfwm4 will manage compositing by setting the property explicitly
+xfconf-query -c xfwm4 -p /general/use_compositing -t bool -s true
+
 # Start up xfce desktop (block until user logs out of desktop)
 xfce4-session
