@@ -43,7 +43,7 @@ script:
   native:
     container:
       name: "<%= account.present? ? "virtualdesktop-#{account}" : 'virtualdesktop' %>"
-      image: "ghcr.io/nesi/nesi-ondemand-vnc:v0.3.0"
+      image: "ghcr.io/nesi/nesi-ondemand-vnc:v0.5.0"
       command: ["/bin/bash","-l","<%= staged_root %>/custom_job_script.sh"]
       restart_policy: 'OnFailure'
       <% if all_supplemental_groups.any? %>
