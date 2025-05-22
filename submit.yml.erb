@@ -54,7 +54,7 @@ script:
       <% end %>
       env:
         TZ: "Pacific/Auckland"
-        LMOD_SITE_MODULEPATH: "/opt/nesi/CS400_centos7_bdw/modules/all"
+        LMOD_SITE_MODULEPATH: "/opt/nesi/CS400_centos7_bdw/modules/all:/opt/nesi/lmod/generic:/opt/nesi/lmod/zen3:/opt/nesi/lmod/mahuika"
         WEBSOCKIFY_CMD: "/usr/local/bin/websockify"
         SESSION_DIR: "<%= staged_root %>"
         PRIMARY_PROJECT: "<%= account %>"
