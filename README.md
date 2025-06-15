@@ -1,1 +1,1 @@
-# nesi-ood-virtualdesktop-app
+# nesi-ood-ansys-workbench-app
