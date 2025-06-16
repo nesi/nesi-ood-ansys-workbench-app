@@ -5,21 +5,16 @@
 -%>
 ---
 cluster: "my-k8s-cluster"
-
 title: "Virtual Desktop"
-
 description: |
   This app will launch a Virtual Desktop
 attributes:
   bc_vnc_resolution:
     required: true
   account:
-    label: "Project Code"
+    label: Project Code
     widget: select
-    options:
-      <%- groups.each do |group| %>
-      - "<%= group %>"
-      <%- end %>
+    options: <%- groups.each do |group| %> - "<%= group %>" <%- end %>
     required: true
   bc_num_hours:
     max: 24
@@ -43,23 +38,24 @@ attributes:
   ansysver:
     widget: select
     label: "ANSYS Version"
-    value: 2025R1
+    value: "2025R1"
+    required: true
     options:
-        - 19.2
-        - 2019R3
-        - 2020R1
-        - 2020R2
-        - 2021R2
-        - 2022R1
-        - 2022R2
-        - 2023R1
-        - 2023R2
-        - 2024R2
-        - 2025R1
+      - "19.2"
+      - "2019R3"
+      - "2020R1"
+      - "2020R2"
+      - "2021R2"
+      - "2022R1"
+      - "2022R2"
+      - "2023R1"
+      - "2023R2"
+      - "2024R2"
+      - "2025R1"
 form:
   - account
-  - ansysver
   - bc_vnc_resolution
   - bc_num_hours
   - num_cores
   - num_mem
+  - ansysver
