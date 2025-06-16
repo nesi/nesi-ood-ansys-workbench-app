@@ -1,8 +1,8 @@
 ---
-name: Virtual Desktop (Xfce) on NeSI OOD
+name: ANSYS Workbench
 category: Interactive Apps
 role: batch_connect
 description: |
-  This will launch an Interactive Xfce desktop session.
+  This will launch an Interactive ANSYS Workbench session.
 
   
