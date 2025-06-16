@@ -14,7 +14,10 @@ attributes:
   account:
     label: Project Code
     widget: select
-    options: <%- groups.each do |group| %> - "<%= group %>" <%- end %>
+    options: 
+      <%- groups.each do |group| %>
+      - "<%= group %>"
+      <%- end %>
     required: true
   bc_num_hours:
     max: 24
