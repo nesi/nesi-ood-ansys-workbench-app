@@ -4,13 +4,19 @@
   }.map(&:name).grep(/.*[0-9]{5}/)
 -%>
 ---
-cluster: "my-k8s-cluster"
-
 title: "Virtual Desktop"
 
 description: |
   This app will launch a Virtual Desktop
 attributes:
+  # select the cluster
+  cluster:
+    widget: "select"
+    options:
+      - ["Kubernetes", "my-k8s-cluster"]
+      - ["Slurm HPC", "nesi_tdc_hpc"]
+    cacheable: false  # we always want k8s at the top?
+
   bc_vnc_resolution:
     required: true
   account:
@@ -41,6 +47,7 @@ attributes:
     value: 2
     widget: number_field
 form:
+  - cluster
   - account
   - bc_vnc_resolution
   - bc_num_hours

@@ -34,6 +34,7 @@
    all_supplemental_groups = [nesi_gid].compact + additional_gids
 %>
 ---
+<% if cluster == "my-k8s-cluster" -%>
 batch_connect:
   template: "vnc"
 
@@ -116,3 +117,37 @@ script:
 
             kubectl get secret ${CFG} -o json | jq --arg key $KEY --arg value $VALUE '.data[$key] = $value'  | kubectl apply -f -
           mount_path: '/opt/open_ondemand/helpers'
+
+<%- else -%>
+batch_connect:
+  template: "vnc"
+  websockify_cmd: '/usr/local/bin/websockify'
+  header: |
+    #!/bin/bash
+    #. ~/.bashrc
+  script_wrapper: |
+    cat << "CTRSCRIPT" > container.sh
+    export PATH="$PATH:/opt/TurboVNC/bin"
+    export LMOD_CONFIG_DIR=/opt/nesi/etc/lmod
+    export MODULEPATH_ROOT=/opt/nesi/lmod
+    export MODULEPATH=/opt/nesi/lmod/generic
+    export BASH_ENV=/usr/share/lmod/lmod/init/bash
+    %s
+    CTRSCRIPT
+
+    export APPTAINER_BIND="$HOME,/nesi,/opt/nesi"
+    
+    # your bindpath will differ
+    apptainer exec --writable-tmpfs $HOME/nesi-ondemand-vnc-0.7.0.sif /bin/bash container.sh
+
+script:
+  accounting_id: "<%= account %>"
+  wall_time: "<%= bc_num_hours.to_i * 3600 %>"
+  native:
+    - "--ntasks"
+    - "1"
+    - "--cpus-per-task"
+    - "<%= num_cores %>"
+    - "--mem"
+    - "<%= num_mem %>G"
+<%- end -%>
