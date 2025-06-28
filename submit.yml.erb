@@ -55,7 +55,10 @@ script:
       <% end %>
       env:
         TZ: "Pacific/Auckland"
-        LMOD_SITE_MODULEPATH: "/opt/nesi/lmod/generic:/opt/nesi/lmod/zen3:/opt/nesi/lmod/mahuika"
+        LMOD_CONFIG_DIR: "/opt/nesi/etc/lmod"
+        MODULEPATH_ROOT: "/opt/nesi/lmod"
+        MODULEPATH: "/opt/nesi/lmod/generic"
+        BASH_ENV: "/usr/share/lmod/lmod/init/bash"
         WEBSOCKIFY_CMD: "/usr/local/bin/websockify"
         SESSION_DIR: "<%= staged_root %>"
         PRIMARY_PROJECT: "<%= account %>"
@@ -136,9 +139,14 @@ batch_connect:
     CTRSCRIPT
 
     export APPTAINER_BIND="$HOME,/nesi,/opt/nesi"
+
+<%- if gpu != "none" -%>
+    export NV_FLAG="--nv"
+<%- else -%>
+    export NV_FLAG=""
+<%- end -%>
     
-    # your bindpath will differ
-    apptainer exec --writable-tmpfs $HOME/nesi-ondemand-vnc-0.7.0.sif /bin/bash container.sh
+    apptainer exec --writable-tmpfs $NVFLAG $HOME/nesi-ondemand-vnc-0.7.0.sif /bin/bash container.sh
 
 script:
   accounting_id: "<%= account %>"
@@ -150,4 +158,8 @@ script:
     - "<%= num_cores %>"
     - "--mem"
     - "<%= num_mem %>G"
+<%- if gpu != "none" -%>
+    - "--gpus-per-node"
+    - "<%= gpu %>"
+<%- end -%>
 <%- end -%>
