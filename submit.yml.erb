@@ -146,7 +146,7 @@ batch_connect:
     export NV_FLAG=""
 <%- end -%>
     
-    apptainer exec --writable-tmpfs $NVFLAG /opt/nesi/containers/nesi-ood-base/nesi-ondemand-vnc-0.7.0.aimg /bin/bash container.sh
+    apptainer exec --writable-tmpfs $NV_FLAG /opt/nesi/containers/nesi-ood-base/nesi-ondemand-vnc-0.7.0.aimg /bin/bash container.sh
 
 script:
   accounting_id: "<%= account %>"
