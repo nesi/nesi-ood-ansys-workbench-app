@@ -1,9 +1,10 @@
 # Export the module function if it exists
 [[ $(type -t module) == "function" ]] && export -f module
 
-exec &> >(tee -a "pod.log")
-
 export SESSION_DIR="${PWD}"
+
+<%- if context.cluster == "my-k8s-cluster" -%>
+exec &> >(tee -a "pod.log")
 
 # the path to websockify needs to be set in $WEBSOCKIFY_CMD, this is done in submit.yml
 which websockify
@@ -17,13 +18,6 @@ export HOST_CFG=$(dig +short -x $HOST_CFG)
 
 export host="$HOST_CFG"
 export websocket="$PORT_CFG"
-
-echo "host is: ${host}"
-echo "port is: ${port}"
-echo "websocket is: $websocket"
-echo "password is: $password"
-echo "spassword is: $spassword"
-echo "display is: $display"
 
 # create the secret with the password set
 cat <<EOF | kubectl apply -f -
@@ -67,3 +61,12 @@ find_port () {
   echo "${PORT_CFG}"
 }
 export -f find_port
+
+<%- end -%>
+
+echo "host is: ${host}"
+echo "port is: ${port}"
+echo "websocket is: $websocket"
+echo "password is: $password"
+echo "spassword is: $spassword"
+echo "display is: $display"
