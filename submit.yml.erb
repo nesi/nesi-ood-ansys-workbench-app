@@ -44,7 +44,7 @@ script:
   native:
     container:
       name: "<%= account.present? ? "virtualdesktop-#{account}" : 'virtualdesktop' %>"
-      image: "ghcr.io/nesi/nesi-ondemand-vnc:v0.6.0"
+      image: "ghcr.io/nesi/nesi-ondemand-vnc:v0.8.0"
       command: ["/bin/bash","-l","<%= staged_root %>/custom_job_script.sh"]
       restart_policy: 'OnFailure'
       <% if all_supplemental_groups.any? %>
@@ -138,7 +138,7 @@ batch_connect:
     %s
     CTRSCRIPT
 
-    export APPTAINER_BIND="$HOME,/nesi,/opt/nesi"
+    export APPTAINER_BIND="$HOME,/nesi,/opt/nesi,/etc/passwd,/etc/group,/var/lib/sss/pipes,/etc/nsswitch.conf,/var/run/munge/munge.socket.2,/var/run/slurm/conf,/var/spool/slurmd/conf-cache"
 
 <%- if gpu != "none" -%>
     export NV_FLAG="--nv"
@@ -146,7 +146,7 @@ batch_connect:
     export NV_FLAG=""
 <%- end -%>
     
-    apptainer exec --writable-tmpfs $NV_FLAG /opt/nesi/containers/nesi-ood-base/nesi-ondemand-vnc-0.7.0.aimg /bin/bash container.sh
+    apptainer exec --writable-tmpfs $NV_FLAG /opt/nesi/containers/nesi-ood-base/nesi-ondemand-vnc-0.8.0.aimg /bin/bash container.sh
 
 script:
   accounting_id: "<%= account %>"
