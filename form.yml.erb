@@ -41,20 +41,63 @@ attributes:
   ansysver:
     widget: select
     label: "ANSYS Version"
-    value: "2025R1"
     required: true
     options:
-      - "19.2"
-      - "2019R3"
-      - "2020R1"
-      - "2020R2"
-      - "2021R2"
-      - "2022R1"
-      - "2022R2"
-      - "2023R1"
-      - "2023R2"
-      - "2024R2"
-      - "2025R1"
+    <%- 
+      # Get available modules dynamically from LMOD paths
+      begin
+        module_path =  "/opt/nesi/lmod/mahuika/ANSYS"
+        available_modules = []
+        Dir.glob("#{module_path}/*.lua").each do |file|
+          # Extract module name from file path
+          relative_path = file.sub("#{module_path}/", "")
+          module_name = relative_path.sub(/\.lua$/, "")                
+          available_modules << module_name
+        end
+        
+        # Sort modules and create options
+        available_modules.uniq.sort.each do |mod|
+          # Create a friendly display name
+          display_name = mod.include?('/') ? "#{mod.split('/').first}/#{mod.split('/').last}" : mod
+      -%>
+      - ["<%= display_name %>", "<%= mod %>"]
+      <%- 
+        end
+      end
+      -%>
+  ansyslic:
+    widget: select
+    label: "Licence"
+    required: true
+    options:
+    <%- 
+      # Get available licences dynamically from licence path
+      begin
+        lic_base_path =  "/opt/nesi/share/ANSYS/Licenses"
+        all_lic = []
+        Dir.glob("#{lic_base_path}/*.lic").each do |lic_path|
+          Pathname.new("lic_path")
+          all_lic << lic_path
+        end
+        all_lic.each do |lic_path|
+          lic_name = "#{lic_path.split('/').last.split('.').first}"
+          -%>
+            - ["<%= lic_name %>", "<%= lic_path %>"]
+          <%- 
+        end
+      -%>
+    help:<%- 
+      if all_lic.empty?
+      -%>
+      "YOU DO NOT HAVE ACCESS TO A VALID ANSYS LICENCE"
+      <%-
+      else
+      -%>
+      "Select which licence to use."
+      <%-
+      end
+    end
+    -%>
 form:
   - account
   - bc_vnc_resolution
@@ -62,3 +105,4 @@ form:
   - num_cores
   - num_mem
   - ansysver
+  - ansyslic
