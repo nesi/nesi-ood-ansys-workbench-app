@@ -5,7 +5,7 @@ module purge && module restore
 
 # Load ANSYS
 module load ANSYS/<%= context.ansysver %>
-source <%= context.ansyslic %>
+source <%= context.ansyslic %> || exit
 export ANSYSLMD_LICENSE_FILE=$ANSYSLI_SERVERS
 export ANSOFTD_LICENSE_FILE=$ANSYSLI_SERVERS
 
