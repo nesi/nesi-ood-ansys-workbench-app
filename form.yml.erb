@@ -98,8 +98,9 @@ attributes:
         lic_base_path =  "/opt/nesi/share/ANSYS/Licenses"
         all_lic = []
         Dir.glob("#{lic_base_path}/*.lic").each do |lic_path|
-          Pathname.new("lic_path")
-          all_lic << lic_path
+          if Pathname.new("lic_path").readable?
+            all_lic << lic_path
+          end
         end
         all_lic.each do |lic_path|
           lic_name = "#{lic_path.split('/').last.split('.').first}"
@@ -111,7 +112,7 @@ attributes:
     help:<%- 
       if all_lic.empty?
       -%>
-      "YOU DO NOT HAVE ACCESS TO A VALID ANSYS LICENCE"
+      "**WARNING: YOU DO NOT HAVE ACCESS TO A VALID ANSYS LICENCE**"
       <%-
       else
       -%>
